@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abiddasurkar.github.io/document-processing-system/sitemap.xml
+Sitemap: https://abiddasurkar.github.io/ecommerce-platform/sitemap.xml
