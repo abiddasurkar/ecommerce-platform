@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import ProductList from './components/ProductList';
-import Cart from './components/Cart';
-import AdminPanel from './components/AdminPanel';
-import UserAuth from './components/UserAuth';
-import { CartProvider } from './context/CartContext';
-import { AuthProvider } from './context/AuthContext';
-import './index.css';
+import React, { useState } from "react";
+import ProductList from "./components/ProductList";
+import AdminPanel from "./components/AdminPanel";
+import UserAuth from "./components/UserAuth";
+import Layout from "./layout/Layout";
+
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import "./index.css";
 
 function App() {
-  const [currentView, setCurrentView] = useState('products');
+  const [currentView, setCurrentView] = useState("products");
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const renderView = () => {
     switch (currentView) {
-      case 'products':
+      case "products":
         return <ProductList />;
-      case 'admin':
+      case "admin":
         return <AdminPanel />;
-      case 'auth':
+      case "auth":
         return <UserAuth />;
       default:
         return <ProductList />;
@@ -26,21 +27,20 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <Header 
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Layout
             currentView={currentView}
             setCurrentView={setCurrentView}
-            onCartClick={() => setIsCartOpen(true)}
-          />
-          <main className="container mx-auto px-4 py-8">
+            isCartOpen={isCartOpen}
+            setIsCartOpen={setIsCartOpen}
+          >
             {renderView()}
-          </main>
-          <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-        </div>
-      </CartProvider>
-    </AuthProvider>
+          </Layout>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
