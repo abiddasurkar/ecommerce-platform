@@ -1,68 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0f172a" />
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="AI-powered document processing system with OCR and automated classification. Extract data from invoices, receipts, contracts, and more with machine learning." />
-    <meta name="keywords" content="document processing, OCR, AI, machine learning, document extraction, invoice processing, receipt scanning, contract analysis" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Full-stack e-commerce solution with secure payments, inventory, and admin management. Built with React, Node.js, MongoDB, and Stripe integration." />
+    <meta name="keywords" content="ecommerce, react, shopping cart, payment processing, inventory management, admin panel" />
     <meta name="author" content="Abid Dasurkar" />
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Document Processing System - AI-Powered OCR" />
-    <meta property="og:description" content="AI-powered document processing system with OCR and automated classification workflows." />
+    <meta property="og:title" content="E-Commerce Platform - Full Stack Solution" />
+    <meta property="og:description" content="Full-stack e-commerce solution with secure payments, inventory, and admin management." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://abiddasurkar.github.io/document-processing-system" />
+    <meta property="og:url" content="https://abiddasurkar.github.io/ecommerce-platform" />
     <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Document Processing System - AI-Powered OCR" />
-    <meta name="twitter:description" content="AI-powered document processing system with OCR and automated classification workflows." />
+    <meta name="twitter:title" content="E-Commerce Platform - Full Stack Solution" />
+    <meta name="twitter:description" content="Full-stack e-commerce solution with secure payments, inventory, and admin management." />
     <meta name="twitter:image" content="%PUBLIC_URL%/og-image.png" />
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://abiddasurkar.github.io/document-processing-system" />
-    
-    <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fakestoreapi.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     
     <!-- Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Sitemap -->
-    <link rel="sitemap" type="application/xml" href="%PUBLIC_URL%/sitemap.xml" />
+    <title>E-Commerce Platform - Full Stack Solution with React & Node.js</title>
     
-    <title>Document Processing System - AI-Powered OCR & Document Extraction</title>
-    
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Document Processing System",
-      "description": "AI-powered OCR and document extraction app for automated classification and validation workflows",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Abid Dasurkar"
-      },
-      "datePublished": "2023-08-20",
-      "keywords": "document processing, OCR, AI, machine learning, document extraction"
-    }
-    </script>
+    <style>
+      /* Critical CSS for initial loading */
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f9fafb;
+        transition: background-color 0.3s ease;
+      }
+      
+      body.dark {
+        background-color: #0f172a;
+      }
+      
+      /* Loading animation */
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f4f6;
+        border-radius: 50%;
+        border-top-color: #3b82f6;
+        animation: spin 1s ease-in-out infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Ensure smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>You need to enable JavaScript to run this e-commerce platform.</p>
+        <p>This is a modern React application that requires JavaScript for full functionality.</p>
+      </div>
+    </noscript>
+    
+    <!-- Loading placeholder -->
+    <div id="loading-placeholder" style="display: none;">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; gap: 1rem;">
+        <div class="loading-spinner"></div>
+        <p style="color: #6b7280; font-size: 1.125rem;">Loading E-Commerce Platform...</p>
+      </div>
+    </div>
+    
     <div id="root"></div>
+    
+    <script>
+      // Show loading placeholder immediately
+      document.getElementById('loading-placeholder').style.display = 'flex';
+      
+      // Theme detection
+      (function() {
+        const savedTheme = localStorage.getItem('ecommerce-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+        }
+      })();
+      
+      // Hide loading placeholder when React app loads
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const placeholder = document.getElementById('loading-placeholder');
+          if (placeholder) {
+            placeholder.style.display = 'none';
+          }
+        }, 100);
+      });
+    </script>
+    
+    <!-- Performance monitoring -->
+    <script>
+      // Log performance metrics
+      window.addEventListener('load', function() {
+        if ('performance' in window) {
+          const perfData = window.performance.timing;
+          const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+          console.log('Page load time:', loadTime + 'ms');
+        }
+      });
+    </script>
   </body>
 </html>
