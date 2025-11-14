@@ -2,16 +2,13 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const { createWriteStream } = require('fs');
 const { join } = require('path');
 
-// Your website URL
 const baseUrl = 'https://abiddasurkar.github.io/ecommerce-platform';
 
-// Pages to include in sitemap
 const pages = [
   { url: '/', changefreq: 'monthly', priority: 1.0 },
-  { url: '/#projects', changefreq: 'monthly', priority: 0.9 },
-  { url: '/#ecommerce-demo', changefreq: 'monthly', priority: 0.9 },
-  { url: '/#skills', changefreq: 'monthly', priority: 0.8 },
-  { url: '/#contact', changefreq: 'yearly', priority: 0.7 }
+  { url: '/#products', changefreq: 'weekly', priority: 0.9 },
+  { url: '/#admin', changefreq: 'monthly', priority: 0.8 },
+  { url: '/#auth', changefreq: 'monthly', priority: 0.7 }
 ];
 
 async function generateSitemap() {

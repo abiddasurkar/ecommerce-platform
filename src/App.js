@@ -1,29 +1,46 @@
-// App.jsx
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Projects from './components/Projects';
-import Skills from './components/Skills';
-import ECommerceDemo from './components/ECommerceDemo';
-import Contact from './components/Contact';
-import { ThemeProvider } from './context/ThemeContext';
+import ProductList from './components/ProductList';
+import Cart from './components/Cart';
+import AdminPanel from './components/AdminPanel';
+import UserAuth from './components/UserAuth';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import './index.css';
 
 function App() {
+  const [currentView, setCurrentView] = useState('products');
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'products':
+        return <ProductList />;
+      case 'admin':
+        return <AdminPanel />;
+      case 'auth':
+        return <UserAuth />;
+      default:
+        return <ProductList />;
+    }
+  };
+
   return (
-    <ThemeProvider>
+    <AuthProvider>
       <CartProvider>
-        <div className="min-h-screen bg-bg-light dark:bg-bg-dark transition-colors duration-300">
-          <Header />
-          <Hero />
-          <Projects />
-          <ECommerceDemo />
-          <Skills />
-          <Contact />
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <Header 
+            currentView={currentView}
+            setCurrentView={setCurrentView}
+            onCartClick={() => setIsCartOpen(true)}
+          />
+          <main className="container mx-auto px-4 py-8">
+            {renderView()}
+          </main>
+          <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
         </div>
       </CartProvider>
-    </ThemeProvider>
+    </AuthProvider>
   );
 }
 

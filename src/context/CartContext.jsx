@@ -1,4 +1,3 @@
-// context/CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
@@ -13,9 +12,30 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartId, setCartId] = useState(null);
 
-  const addToCart = (product) => {
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('ecommerce-cart');
+    const savedCartId = localStorage.getItem('ecommerce-cart-id');
+    
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+    if (savedCartId) {
+      setCartId(savedCartId);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever cart changes
+  useEffect(() => {
+    localStorage.setItem('ecommerce-cart', JSON.stringify(cart));
+    if (cartId) {
+      localStorage.setItem('ecommerce-cart-id', cartId);
+    }
+  }, [cart, cartId]);
+
+  const addToCart = async (product) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
@@ -27,6 +47,28 @@ export const CartProvider = ({ children }) => {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
+
+    // Sync with API if we have a cart ID
+    if (cartId) {
+      try {
+        await fetch(`https://fakestoreapi.com/carts/${cartId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: 1,
+            date: new Date().toISOString(),
+            products: cart.map(item => ({
+              productId: item.id,
+              quantity: item.quantity,
+            })),
+          }),
+        });
+      } catch (error) {
+        console.error('Error syncing cart with API:', error);
+      }
+    }
   };
 
   const removeFromCart = (productId) => {
@@ -57,6 +99,27 @@ export const CartProvider = ({ children }) => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
+  const createCart = async () => {
+    try {
+      const response = await fetch('https://fakestoreapi.com/carts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: 1,
+          date: new Date().toISOString(),
+          products: [],
+        }),
+      });
+      const data = await response.json();
+      setCartId(data.id);
+      return data.id;
+    } catch (error) {
+      console.error('Error creating cart:', error);
+    }
+  };
+
   return (
     <CartContext.Provider value={{
       cart,
@@ -66,8 +129,8 @@ export const CartProvider = ({ children }) => {
       clearCart,
       getCartTotal,
       getCartItemsCount,
-      isCartOpen,
-      setIsCartOpen
+      cartId,
+      createCart,
     }}>
       {children}
     </CartContext.Provider>
